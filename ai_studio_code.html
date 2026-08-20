@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nature Adventure – Ce que cache la vie</title>
+  
+  <!-- Police arrondie et amicale pour les enfants -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-bg: #E8F8F5;
+      --color-primary: #2ECC71;
+      --color-primary-dark: #27AE60;
+      --color-orange: #FF9F43;
+      --color-orange-dark: #EE5253;
+      --color-yellow: #FECA57;
+      --color-blue: #48DBFB;
+      --color-blue-dark: #0ABDE3;
+      --color-purple: #9B59B6;
+      --color-text: #2C3E50;
+      --color-card-bg: #FFFFFF;
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --shadow-fun: 0 10px 0 rgba(0, 0, 0, 0.08), 0 15px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Nunito', 'Quicksand', sans-serif;
+      background: linear-gradient(180deg, #DFF9FB 0%, #E8F8F5 100%);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    /* Conteneur principal façon "Livre d'aventure" */
+    .app-container {
+      width: 100%;
+      max-width: 900px;
+      background: #FAFDFF;
+      border: 6px solid #B8E994;
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 40px rgba(46, 204, 113, 0.15), 0 10px 0 #78E08F;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 85vh;
+      position: relative;
+    }
+
+    /* Barre supérieure (Navigation) */
+    header {
+      background: #78E08F;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 4px solid #38ADA9;
+    }
+
+    .brand-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #075E54;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: #FFFFFF;
+      border: 3px solid #38ADA9;
+      color: #075E54;
+      font-size: 1.1rem;
+      font-weight: 900;
+      padding: 8px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 0 #38ADA9;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #38ADA9;
+    }
+
+    .nav-btn:active {
+      transform: translateY(3px);
+      box-shadow: none;
+    }
+
+    /* Écrans */
+    .screen {
+      display: none;
+      padding: 24px;
+      animation: fadeIn 0.4s ease-out;
+      flex: 1;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === ACCUEIL === */
+    .home-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: auto 0;
+      gap: 20px;
+    }
+
+    .giro-avatar-wrap {
+      width: 190px;
+      height: 190px;
+      background: #FFF9E6;
+      border: 6px solid var(--color-yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-fun);
+      animation: float 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .giro-badge {
+      position: absolute;
+      bottom: -6px;
+      background: var(--color-orange);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 3px solid white;
+    }
+
+    .speech-bubble {
+      background: white;
+      border: 4px solid var(--color-yellow);
+      padding: 16px 24px;
+      border-radius: 24px;
+      max-width: 500px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #2C3E50;
+      position: relative;
+      box-shadow: var(--shadow-fun);
+    }
+
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 0 16px 16px;
+      border-style: solid;
+      border-color: var(--color-yellow) transparent;
+      display: block;
+      width: 0;
+    }
+
+    .btn-big-explore {
+      background: linear-gradient(180deg, #2ECC71 0%, #27AE60 100%);
+      color: white;
+      font-size: 1.6rem;
+      font-weight: 900;
+      padding: 18px 40px;
+      border-radius: 50px;
+      border: 4px solid #1E824C;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #1E824C, 0 15px 25px rgba(46, 204, 113, 0.4);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .btn-big-explore:hover {
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 11px 0 #1E824C;
+    }
+
+    .btn-big-explore:active {
+      transform: translateY(6px);
+      box-shadow: none;
+    }
+
+    /* === MENU DES SECTIONS === */
+    .menu-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #2C3E50;
+      margin-bottom: 24px;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+      width: 100%;
+      margin: auto 0;
+    }
+
+    .category-btn {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 5px solid;
+    }
+
+    .category-btn:hover {
+      transform: translateY(-8px) scale(1.03);
+    }
+
+    .category-btn.animals {
+      border-color: var(--color-orange);
+      box-shadow: 0 8px 0 #E67E22;
+    }
+    .category-btn.plants {
+      border-color: var(--color-primary);
+      box-shadow: 0 8px 0 #27AE60;
+    }
+    .category-btn.quiz {
+      border-color: var(--color-blue-dark);
+      box-shadow: 0 8px 0 #0984E3;
+    }
+
+    .cat-icon {
+      font-size: 4.5rem;
+      line-height: 1;
+    }
+
+    .cat-label {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #2C3E50;
+    }
+
+    .cat-sub {
+      font-size: 1rem;
+      color: #7F8C8D;
+      font-weight: 700;
+    }
+
+    /* === GRILLES DE CARTES ÉDUCATIVES === */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .edu-card {
+      background: white;
+      border: 4px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 6px 0 #CBD5E1;
+      gap: 12px;
+      transition: transform 0.2s;
+    }
+
+    .edu-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .edu-card .emoji-avatar {
+      font-size: 4rem;
+      background: #F1F5F9;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 3px solid #E2E8F0;
+    }
+
+    .edu-card h3 {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #2C3E50;
+    }
+
+    .edu-card p {
+      font-size: 1.05rem;
+      line-height: 1.4;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .btn-sound {
+      background: #FECA57;
+      border: 3px solid #F39C12;
+      border-radius: 30px;
+      padding: 6px 14px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #7E5109;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: auto;
+      box-shadow: 0 3px 0 #D68910;
+    }
+
+    .btn-sound:active {
+      transform: translateY(3px);
+      box-shadow: none;
+    }
+
+    /* === QUIZ === */
+    .quiz-container {
+      max-width: 650px;
+      margin: auto;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .quiz-question-box {
+      background: white;
+      border: 5px solid var(--color-blue);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 8px 0 var(--color-blue-dark);
+    }
+
+    .quiz-question-text {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #2C3E50;
+      margin-top: 10px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .quiz-opt-btn {
+      background: #FFFFFF;
+      border: 4px solid #CBD5E1;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      text-align: left;
+      box-shadow: 0 5px 0 #94A3B8;
+      transition: all 0.15s;
+    }
+
+    .quiz-opt-btn:hover {
+      background: #F8FAFC;
+      border-color: #94A3B8;
+    }
+
+    .quiz-opt-btn.correct {
+      background: #D4EDDA !important;
+      border-color: #28A745 !important;
+      color: #155724 !important;
+      box-shadow: 0 5px 0 #1E7E34 !important;
+    }
+
+    .quiz-opt-btn.wrong {
+      background: #F8D7DA !important;
+      border-color: #DC3545 !important;
+      color: #721C24 !important;
+      box-shadow: 0 5px 0 #BD2130 !important;
+    }
+
+    .quiz-feedback {
+      min-height: 50px;
+      font-size: 1.25rem;
+      font-weight: 900;
+      padding: 10px;
+      border-radius: 12px;
+      display: none;
+    }
+
+    .btn-quiz-next {
+      background: var(--color-orange);
+      color: white;
+      border: 4px solid #D35400;
+      padding: 14px 28px;
+      font-size: 1.3rem;
+      font-weight: 900;
+      border-radius: 50px;
+      cursor: pointer;
+      align-self: center;
+      box-shadow: 0 6px 0 #BA4A00;
+      display: none;
+    }
+
+    .btn-quiz-next:active {
+      transform: translateY(4px);
+      box-shadow: none;
+    }
+
+    /* Score final */
+    .badge-win {
+      font-size: 6rem;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-15px); }
+    }
+
+    /* Footer interactif */
+    footer {
+      text-align: center;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #78909C;
+      background: #F0FAF7;
+      border-top: 2px dashed #B8E994;
+    }
+
+    /* Adaptabilité mobile */
+    @media (max-width: 600px) {
+      .brand-title span { display: none; }
+      .speech-bubble { font-size: 1.1rem; }
+      .btn-big-explore { font-size: 1.3rem; padding: 14px 24px; }
+      .cat-icon { font-size: 3.5rem; }
+      .cat-label { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Barre du haut -->
+    <header>
+      <div class="brand-title">
+        🦒 <span>Nature Adventure</span>
+      </div>
+      <button class="nav-btn" id="btn-home-nav" onclick="showScreen('screen-menu')">
+        🏠 Menu
+      </button>
+    </header>
+
+    <!-- 1. ÉCRAN D'ACCUEIL -->
+    <section id="screen-welcome" class="screen active">
+      <div class="home-content">
+        <!-- Illustration SVG de Giro la Girafe exploratrice -->
+        <div class="giro-avatar-wrap">
+          <svg viewBox="0 0 100 100" width="130" height="130">
+            <!-- Chapeau d'explorateur safari -->
+            <path d="M22 36 Q50 20 78 36 L84 42 Q50 34 16 42 Z" fill="#D2B48C" stroke="#8B5A2B" stroke-width="2.5" />
+            <path d="M30 36 Q50 15 70 36" fill="#DEB887" stroke="#8B5A2B" stroke-width="2.5" />
+            <rect x="33" y="32" width="34" height="4" fill="#E67E22" rx="2" />
+            
+            <!-- Tête de Giro -->
+            <ellipse cx="50" cy="56" rx="26" ry="24" fill="#FAD02C" stroke="#D68910" stroke-width="2.5" />
+            <!-- Taches girafes -->
+            <circle cx="38" cy="46" r="4.5" fill="#E67E22" />
+            <circle cx="62" cy="48" r="4" fill="#E67E22" />
+            <circle cx="50" cy="40" r="3" fill="#E67E22" />
+            
+            <!-- Yeux malicieux -->
+            <ellipse cx="41" cy="54" rx="4" ry="5.5" fill="#2C3E50" />
+            <circle cx="39.5" cy="52.5" r="1.8" fill="#FFF" />
+            <ellipse cx="59" cy="54" rx="4" ry="5.5" fill="#2C3E50" />
+            <circle cx="57.5" cy="52.5" r="1.8" fill="#FFF" />
+
+            <!-- Joues roses -->
+            <circle cx="33" cy="62" r="3.5" fill="#FF7675" opacity="0.6"/>
+            <circle cx="67" cy="62" r="3.5" fill="#FF7675" opacity="0.6"/>
+
+            <!-- Museau et grand sourire -->
+            <ellipse cx="50" cy="67" rx="16" ry="11" fill="#FFEAA7" stroke="#D68910" stroke-width="2" />
+            <circle cx="45" cy="65" r="1.5" fill="#8B5A2B" />
+            <circle cx="55" cy="65" r="1.5" fill="#8B5A2B" />
+            <path d="M 44 70 Q 50 76 56 70" stroke="#8B5A2B" stroke-width="2.5" fill="none" stroke-linecap="round" />
+          </svg>
+          <div class="giro-badge">Giro 🦒</div>
+        </div>
+
+        <div class="speech-bubble">
+          "Coucou ! Je suis <strong>Giro</strong> le petit explorateur.<br/>
+          Viens découvrir avec moi les secrets magiques de la nature !"
+        </div>
+
+        <button class="btn-big-explore" onclick="showScreen('screen-menu')">
+          🌍 Commencer l'aventure ! 🚀
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. MENU PRINCIPAL DES 3 SECTIONS -->
+    <section id="screen-menu" class="screen">
+      <h2 class="menu-title">🌟 Choisis ta découverte :</h2>
+      
+      <div class="categories-grid">
+        <!-- Bouton Animaux -->
+        <div class="category-btn animals" onclick="showScreen('screen-animals')">
+          <div class="cat-icon">🐾</div>
+          <div class="cat-label">Les Animaux</div>
+          <div class="cat-sub">Les secrets de nos amis</div>
+        </div>
+
+        <!-- Bouton Plantes -->
+        <div class="category-btn plants" onclick="showScreen('screen-plants')">
+          <div class="cat-icon">🌱</div>
+          <div class="cat-label">Les Plantes</div>
+          <div class="cat-sub">Les trésors de la Terre</div>
+        </div>
+
+        <!-- Bouton Quiz -->
+        <div class="category-btn quiz" onclick="startQuiz()">
+          <div class="cat-icon">⭐</div>
+          <div class="cat-label">Le Super Quiz</div>
+          <div class="cat-sub">Teste tes découvertes !</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SECTION ANIMAUX -->
+    <section id="screen-animals" class="screen">
+      <h2 class="menu-title">🐾 Le monde des animaux</h2>
+      <div class="cards-grid">
+        
+        <div class="edu-card">
+          <div class="emoji-avatar">🦒</div>
+          <h3>La Girafe</h3>
+          <p>Son très long cou lui permet d'attraper les feuilles les plus tendres tout en haut des arbres !</p>
+          <button class="btn-sound" onclick="speakText('La girafe : son très long cou lui permet d\'attraper les feuilles les plus tendres tout en haut des arbres !')">
+            🔊 Écouter Giro
+          </button>
+        </div>
+
+        <div class="edu-card">
+          <div class="emoji-avatar">🐝</div>
+          <h3>L'Abeille</h3>
+          <p>Elle fait une petite danse en volant pour indiquer aux autres abeilles où sont les plus belles fleurs !</p>
+          <button class="btn-sound" onclick="speakText('L\'abeille : elle fait une petite danse en volant pour indiquer aux autres où sont les plus jolies fleurs !')">
+            🔊 Écouter Giro
+          </button>
+        </div>
+
+        <div class="edu-card">
+          <div class="emoji-avatar">🦔</div>
+          <h3>Le Hérisson</h3>
+          <p>Quand il a peur, il se met en boule piquante pour se protéger comme une armure magique.</p>
+          <button class="btn-sound" onclick="speakText('Le hérisson : quand il a peur, il se met en boule piquante pour se protéger comme une armure !')">
+            🔊 Écouter Giro
+          </button>
+        </div>
+
+        <div class="edu-card">
+          <div class="emoji-avatar">🐬</div>
+          <h3>Le Dauphin</h3>
+          <p>Il dort avec un œil ouvert pour continuer à respirer et surveiller ses amis dans l'océan.</p>
+          <button class="btn-sound" onclick="speakText('Le dauphin : il dort avec un œil ouvert pour surveiller ses amis dans l\'eau !')">
+            🔊 Écouter Giro
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. SECTION PLANTES -->
+    <section id="screen-plants" class="screen">
+      <h2 class="menu-title">🌱 Les secrets des plantes</h2>
+      <div class="cards-grid">
+
+        <div class="edu-card">
+          <div class="emoji-avatar">🌳</div>
+          <h3>L'Arbre Géant</h3>
+          <p>Ses feuilles boivent la lumière du soleil pour fabriquer de l'air pur que nous respirons tous !</p>
+          <button class="btn-sound" onclick="speakText('L\'arbre : ses feuilles boivent la lumière du soleil pour fabriquer de l\'air pur pour nous !')">
+            🔊 Écouter Giro
+          </button>
+        </div>
+
+        <div class="edu-card">
+          <div class="emoji-avatar">🌻</div>
+          <h3>Le Tournesol</h3>
+          <p>Sa fleur tourne doucement toute la journée pour toujours regarder le soleil bien en face !</p>
+          <button class="btn-sound" onclick="speakText('Le tournesol : sa fleur tourne toute la journée pour regarder le soleil !')">
+            🔊 Écouter Giro
+          </button>
+        </div>
+
+        <div class="edu-card">
+          <div class="emoji-avatar">🍄</div>
+          <h3>Le Champignon</h3>
+          <p>Sous la terre, il forme un réseau secret qui permet aux arbres de se parler et de s'entraider !</p>
+          <button class="btn-sound" onclick="speakText('Le champignon : sous la terre, il forme un réseau secret qui aide les arbres à se parler !')">
+            🔊 Écouter Giro
+          </button>
+        </div>
+
+        <div class="edu-card">
+          <div class="emoji-avatar">🌵</div>
+          <h3>Le Cactus</h3>
+          <p>Il stocke beaucoup d'eau dans son corps rond pour vivre dans le désert sans jamais avoir soif.</p>
+          <button class="btn-sound" onclick="speakText('Le cactus : il garde de l\'eau dans son corps pour survivre dans le désert sans avoir soif !')">
+            🔊 Écouter Giro
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. SECTION QUIZ INTERACTIF -->
+    <section id="screen-quiz" class="screen">
+      <div class="quiz-container">
+        
+        <div id="quiz-game-view">
+          <div class="quiz-question-box">
+            <span id="quiz-progress" style="font-weight: 800; color: #0984E3; font-size: 1.1rem;">Question 1 / 3</span>
+            <h3 class="quiz-question-text" id="quiz-question">Chargement...</h3>
+          </div>
+
+          <div class="quiz-options" id="quiz-options">
+            <!-- Choix générés dynamiquement -->
+          </div>
+
+          <div class="quiz-feedback" id="quiz-feedback"></div>
+
+          <button class="btn-quiz-next" id="btn-quiz-next" onclick="nextQuestion()">
+            Question suivante ➔
+          </button>
+        </div>
+
+        <!-- Vue Résultat du Quiz -->
+        <div id="quiz-result-view" style="display: none; flex-direction: column; align-items: center; gap: 16px;">
+          <div class="badge-win">🏆</div>
+          <h2 style="font-size: 1.8rem; font-weight: 900; color: #2ECC71;">Bravo, super explorateur !</h2>
+          <p id="quiz-result-text" style="font-size: 1.3rem; font-weight: 700; color: #2C3E50;">Tu as bien répondu à toutes les questions !</p>
+          <button class="btn-big-explore" onclick="showScreen('screen-menu')" style="margin-top: 10px;">
+            🌟 Rejouer ou Explorer
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+      🌿 <em>Nature Adventure – Ce que cache la vie</em> • Le compagnon interactif de tes cahiers d'activités !
+    </footer>
+  </div>
+
+  <script>
+    /* --- GESTION DE LA NAVIGATION --- */
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const activeScreen = document.getElementById(screenId);
+      if (activeScreen) {
+        activeScreen.classList.add('active');
+      }
+
+      // Masquer le bouton d'accueil si on est déjà sur l'écran d'accueil
+      const navHomeBtn = document.getElementById('btn-home-nav');
+      if (screenId === 'screen-welcome') {
+        navHomeBtn.style.visibility = 'hidden';
+      } else {
+        navHomeBtn.style.visibility = 'visible';
+      }
+
+      // Scroll automatique en haut
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialisation
+    showScreen('screen-welcome');
+
+    /* --- SYNTHÈSE VOCALE AMICALE EN FRANÇAIS (Pour les 4-7 ans) --- */
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Stoppe si déjà en cours
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 0.95; // Un peu plus posé pour les enfants
+        utterance.pitch = 1.2; // Voix joyeuse et douce
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    /* --- DONNÉES DU QUIZ --- */
+    const quizQuestions = [
+      {
+        question: "Pourquoi la girafe Giro a-t-elle un si long cou ?",
+        options: [
+          { text: "🌿 Pour attraper les feuilles tout en haut des arbres", correct: true },
+          { text: "🐟 Pour nager sous l'eau avec les poissons", correct: false }
+        ],
+        successMessage: "🎉 Oui, exactement ! Les feuilles les plus hautes sont ses préférées !"
+      },
+      {
+        question: "Que fait le tournesol pendant toute la journée ?",
+        options: [
+          { text: "☀️ Il tourne la tête pour suivre le soleil", correct: true },
+          { text: "😴 Il dort la tête en bas", correct: false }
+        ],
+        successMessage: "🌻 Bravo ! Il adore la douce lumière du soleil !"
+      },
+      {
+        question: "Que fabriquent les petites abeilles dans leur ruche ?",
+        options: [
+          { text: "🍫 Du chocolat au lait", correct: false },
+          { text: "🍯 Du délicieux miel doré", correct: true }
+        ],
+        successMessage: "🐝 Miam ! Tu es un vrai champion de la nature !"
+      }
+    ];
+
+    let currentQuestionIdx = 0;
+    let score = 0;
+
+    function startQuiz() {
+      currentQuestionIdx = 0;
+      score = 0;
+      document.getElementById('quiz-game-view').style.display = 'block';
+      document.getElementById('quiz-result-view').style.display = 'none';
+      showScreen('screen-quiz');
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = quizQuestions[currentQuestionIdx];
+      document.getElementById('quiz-progress').innerText = `Question ${currentQuestionIdx + 1} sur ${quizQuestions.length}`;
+      document.getElementById('quiz-question').innerText = q.question;
+      
+      const optContainer = document.getElementById('quiz-options');
+      optContainer.innerHTML = '';
+      
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.style.display = 'none';
+      
+      const nextBtn = document.getElementById('btn-quiz-next');
+      nextBtn.style.display = 'none';
+
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.innerText = opt.text;
+        btn.onclick = () => selectAnswer(btn, opt.correct, q.successMessage);
+        optContainer.appendChild(btn);
+      });
+
+      // Lecture vocale automatique de la question pour aider les petits
+      speakText(q.question);
+    }
+
+    function selectAnswer(button, isCorrect, successMessage) {
+      const allButtons = document.querySelectorAll('.quiz-opt-btn');
+      allButtons.forEach(b => b.disabled = true);
+
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.style.display = 'block';
+
+      if (isCorrect) {
+        button.classList.add('correct');
+        feedback.style.background = '#E8F8F5';
+        feedback.style.color = '#27AE60';
+        feedback.innerText = successMessage;
+        score++;
+        speakText(successMessage);
+      } else {
+        button.classList.add('wrong');
+        feedback.style.background = '#FDEDEC';
+        feedback.style.color = '#E74C3C';
+        feedback.innerText = "✨ Presque ! Regarde bien la bonne réponse.";
+        speakText("Presque ! Essaie encore la prochaine fois.");
+        // Révéler la bonne réponse
+        allButtons.forEach(b => {
+          if (b.innerText.includes("🌿") || b.innerText.includes("☀️") || b.innerText.includes("🍯")) {
+            b.classList.add('correct');
+          }
+        });
+      }
+
+      const nextBtn = document.getElementById('btn-quiz-next');
+      if (currentQuestionIdx < quizQuestions.length - 1) {
+        nextBtn.innerText = "Question suivante ➔";
+      } else {
+        nextBtn.innerText = "Voir mon trésor 🏆";
+      }
+      nextBtn.style.display = 'inline-block';
+    }
+
+    function nextQuestion() {
+      currentQuestionIdx++;
+      if (currentQuestionIdx < quizQuestions.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('quiz-game-view').style.display = 'none';
+      const resultView = document.getElementById('quiz-result-view');
+      resultView.style.display = 'flex';
+      
+      const resultText = document.getElementById('quiz-result-text');
+      resultText.innerText = `Tu as obtenu ${score} sur ${quizQuestions.length} bonnes réponses ! Giro est très fier de toi !`;
+      
+      speakText(`Bravo ! Tu as obtenu ${score} bonnes réponses. Tu as gagné la médaille d'or des explorateurs !`);
+    }
+  </script>
+</body>
+</html>
